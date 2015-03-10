@@ -1,0 +1,95 @@
+Vagrant.configure(2) do |config|
+
+config.vm.box = "hashicorp/precise64"
+config.vm.provider "virtualbox" do |v|
+	#v.gui = true
+	v.memory = 1024
+	v.cpus = 2
+	end
+
+config.vm.define :rd do |rd_config|
+	rd_config.vm.base_mac = "080027880CA6"
+	rd_config.vm.host_name = "rd"
+	rd_config.vm.network "private_network", ip: "192.168.33.10"
+	rd_config.vm.network "forwarded_port", guest: 80, host: 8010
+	#rd_config.vm.share_folder "app", "/home/vagrant/app", "/Users/jefferson.dias/app"
+	config.vm.provider "virtualbox" do |rd|
+		rd.name = "rd"
+		rd.memory = 1024
+		rd.cpus = 2
+	end
+end
+
+config.vm.define :cl01 do |cl01_config|
+	cl01_config.vm.base_mac = "080027880CA7"
+	cl01_config.vm.host_name = "cl01"
+	cl01_config.vm.network "private_network", ip: "192.168.33.11"
+	cl01_config.vm.network "forwarded_port", guest: 80, host: 8011
+	#cl01_config.vm.share_folder "app", "/home/vagrant/app", "/Users/jefferson.dias/app"
+	config.vm.provider "virtualbox" do |cl01|
+		cl01.name = "cl01"
+		cl01.memory = 1024
+		cl01.cpus = 2
+	end
+end
+
+config.vm.define :cl02 do |cl02_config|
+	cl02_config.vm.base_mac = "080027880CA8"
+	cl02_config.vm.host_name = "cl02"
+	cl02_config.vm.network "private_network", ip: "192.168.33.12"
+	cl02_config.vm.network "forwarded_port", guest: 80, host: 8012
+	#cl02_config.vm.share_folder "app", "/home/vagrant/app", "/Users/jefferson.dias/app"
+	config.vm.provider "virtualbox" do |cl02|
+		cl02.name = "cl02"
+		cl02.memory = 1024
+		cl02.cpus = 2
+	end
+end
+
+config.vm.define :chef do |chef_config|
+	chef_config.vm.base_mac = "080027880CA9"
+	chef_config.vm.host_name = "chef"
+	#chef_config.vm.hosts.name = "chef"
+	chef_config.vm.network "private_network", ip: "192.168.33.13"
+	chef_config.vm.network "forwarded_port", guest: 80, host: 8013
+	#chef_config.vm.share_folder "app", "/home/vagrant/app", "/Users/jefferson.dias/app"
+	config.vm.provider "virtualbox" do |chef|
+		chef.name = "chef"
+		chef.memory = 1024
+		chef.cpus = 2
+	end
+end
+
+config.vm.define :git do |git_config|
+	git_config.vm.base_mac = "080027880CB0"
+	git_config.vm.host_name = "git"
+	#git_config.vm.hosts.name = "git"
+	git_config.vm.network "private_network", ip: "192.168.33.14"
+	git_config.vm.network "forwarded_port", guest: 80, host: 8014
+	#git_config.vm.share_folder "app", "/home/vagrant/app", "/Users/jefferson.dias/app"
+	config.vm.provider "virtualbox" do |git|
+		git.name = "git"
+		git.memory = 1024
+		git.cpus = 2
+	end
+end
+
+config.vm.define :puppet do |puppet_config|
+	puppet_config.vm.base_mac = "080027880CB9"
+	puppet_config.vm.host_name = "puppet"
+	#puppet_config.vm.hosts.name = "puppet"
+	puppet_config.vm.network "private_network", ip: "192.168.33.15"
+	puppet_config.vm.network "forwarded_port", guest: 80, host: 8015
+	#puppet_config.vm.share_folder "app", "/home/vagrant/app", "/Users/jefferson.dias/app"
+	config.vm.provider "virtualbox" do |puppet|
+		puppet.name = "puppet"
+		puppet.memory = 1024
+		puppet.cpus = 2
+	end
+end
+
+config.vm.provision "shell", inline: <<-SHELL
+	sudo apt-get update
+	sudo apt-get install -y mc htop git
+	SHELL
+end
